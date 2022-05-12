@@ -1,5 +1,5 @@
 
-const URL = "http://localhost:3000/api/products"; // URL for get products
+const URL = "http://localhost:3000/api/products/"; // URL for get products
 
 
 // Fetch backend data for products
@@ -99,7 +99,7 @@ function createDescription(dataInfo) {
 
 // Add link to product & load items to article
 function appendLinkToArticle(link, article) {
-    const items = document.querySelector("#items"); // get element with id items
+    const items = document.querySelector("#items"); // create element in > items
     if (items !== null) { // security check for items
         items.appendChild(link); // append link to item
         link.appendChild(article); // append article to link

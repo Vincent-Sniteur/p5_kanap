@@ -1,14 +1,14 @@
 
-const URL = "http://localhost:3000/api/products";
+const URL = "http://localhost:3000/api/products"; // URL for get products
 
 
-// Fetch backend
+// Fetch backend data for products
 fetch(URL)
 .then((response) => response.json())
-.then((dataResponse) => getProducts(dataResponse))
+.then((dataResponse) => getProducts(dataResponse)) // get products from database and send to getProducts function
 
 
-// Get products from database
+// Get products from database and send to appendChildren function
 function getProducts(data) {
     console.log(data); // show all products
 
@@ -52,8 +52,6 @@ function createArticle() {
 }
 
 
-
-
 // Create product card link from data whith UUID
 function createLink(dataId) {
     const link = document.createElement("a") // Create a element for link / product
@@ -77,19 +75,21 @@ function createImage(imageUrl, altTxt) {
     return image
 }
 
-// create product card from data paragraph price
+// create product card from data paragraph description
 function createDescription(dataInfo) {
     const description = document.createElement("p") // Create a element <p>
-    description.classList.add("productDescription") // add a class to price
-    description.textContent = dataInfo + "€" // add a text to price
+    description.classList.add("productDescription") // add a class to description
+    description.textContent = dataInfo + "€" // add a text to description
     return description
 }
 
 // Add link to product & load items to article
 function appendChildren(link, article) {
-    const items = document.querySelector("#items"); // select the element for append link
-    if (items !== null) { // if element exist
+    const items = document.querySelector("#items"); // get element with id items
+    if (items !== null) { // security check for items
         items.appendChild(link); // append link to item
         link.appendChild(article); // append article to link
+    }else { // show alert if items is null
+        alert("Un problème dans la base de données est survenu, nous sommes désolés pour la gêne occasionnée.")
     }
 }

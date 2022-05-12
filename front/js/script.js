@@ -24,21 +24,28 @@ function getProducts(data) {
     // Data array of objects alt
     const altTxt = data[0].altTxt
 
-    // Data array of objects price
+    // Data array of objects description
     const dataInfo = data[0].description
+
+    // Data array of objects price
+    const price = data[0].price
+
+    // Data array of objects color 
+    const color = data[0].colors
+
 
     // Create article > information for product card
     const h3 = createTitle(dataName) // create title
     const images = createImage(imageUrl, altTxt) // create image
-    const description = createDescription(dataInfo) // create price
+    const description = createDescription(dataInfo) // create description
 
 
     // add link to product
     const link = createLink(dataId, dataName, imageUrl, altTxt, dataInfo)
     const article = createArticle()
-    article.appendChild(h3) // add title to article
     article.appendChild(images) // add image to article
-    article.appendChild(description)  // add price to article
+    article.appendChild(h3) // add title to article
+    article.appendChild(description)  // add description to article
     appendChildren(link, article) // add link to article  
 }
 
@@ -46,8 +53,7 @@ function getProducts(data) {
 // Create article for product card
 function createArticle() {
     const article = document.createElement("article") // Create a element for article
-    article.classList.add("products") // add a class to article
-    console.log(article) // show article console
+    console.log(article) // show article in console ( temporaire )
     return article // return article
 }
 
@@ -89,7 +95,8 @@ function appendChildren(link, article) {
     if (items !== null) { // security check for items
         items.appendChild(link); // append link to item
         link.appendChild(article); // append article to link
-    }else { // show alert if items is null
+    }
+    else { // show alert if items is null
         alert("Un problème dans la base de données est survenu, nous sommes désolés pour la gêne occasionnée.")
     }
 }

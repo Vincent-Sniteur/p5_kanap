@@ -13,27 +13,27 @@ fetch(getProductData)
 .then((dataResponse) => getProducts(dataResponse))
 
 
-// Get products from database and send to appendChildren function
+// Get products from database
 function getProducts(data) {
-    console.log("Kanap:", data); // show products info in console ( temporaire )
+    console.log("Kanap:", data); // Show products info in console ( temporaire )
 
-    // Get data from database
+    // Get data & Send to functions addTitle, addPrice, addDescription, addColorChoice, addImg
     const { name, imageUrl, altTxt, description, price, colors } = data;
-    createImg(imageUrl, altTxt)
+    addImg(imageUrl, altTxt)
     addTitle(name)
     addPrice(price)
-    AddDescription(description)
-    colorChoice(colors)
+    addDescription(description)
+    addColorChoice(colors)
 }
 
 
 // Add name to product
 function addTitle (name) {
-    const selectorTitle = document.querySelector("#title") // get selector for title
+    const selectorTitle = document.querySelector("#title") // Add selector for title
     if (selectorTitle !== null) { // Security check for title
-        selectorTitle.textContent = name // add title from data
+        selectorTitle.textContent = name // Add title from data
     }
-    else { // show alert if null
+    else { // Show alert if null
         error()
     }
 }
@@ -41,45 +41,56 @@ function addTitle (name) {
 
 // Add price to product
 function addPrice (price) {
-    const selectorPrice = document.querySelector("#price") // get selector for price
+    const selectorPrice = document.querySelector("#price") // Add selector for price
     if (selectorPrice !== null) { // Security check for price
         selectorPrice.textContent = price // add price from data
     }
-    else { // show alert if null
+    else { // Show alert if null
        error()
     }
 }
 
 
 // Add description to product
-function AddDescription (description) {
-    const selectorDescription = document.querySelector("#description") // get selector for description
+function addDescription (description) {
+    const selectorDescription = document.querySelector("#description") // Add selector for description
     if (selectorDescription !== null) { // Security check for description
-        selectorDescription.textContent = description // add description from data
+        selectorDescription.textContent = description // Add description from data
     }
-    else { // show alert if null
+    else { // Show alert if null
         error()
     }
 }
 
 
-// add choice of color to product
-function colorChoice (colors) {
-    const colorSelector = document.querySelector("colors") // get selector for color
+// Add choice of color to product
+function addColorChoice (colors) {
+    const colorSelector = document.querySelector("#colors") // Add selector for color
+    if (colorSelector !== null) { // Security check for color selector
+        colors.forEach(color => {
+            const option = document.createElement("option") // Create option
+            option.value = color // Add value to option
+            option.textContent = color // Add text to option
+            colorSelector.appendChild(option) // Add option to selector
+        });
+    }
+    else { // Show alert if null
+        error()
+    }
 }
 
 
 // Create image for product
-function createImg (imageUrl, altTxt) {
-    const img = document.createElement("img") // create image
-    img.src = imageUrl // add image url from data
-    img.alt = altTxt // add alt text from data
-    const selectorIMG = document.querySelector(".item__img") // get selector for image
+function addImg (imageUrl, altTxt) {
+    const img = document.createElement("img") // Create image
+    img.src = imageUrl // Add image url from data
+    img.alt = altTxt // Add alt text from data
+    const selectorIMG = document.querySelector(".item__img") // Add selector for image
     if (selectorIMG !== null) { // Security check for img selector
-        selectorIMG.appendChild(img) // add image to selector
+        selectorIMG.appendChild(img) // Add image to selector
     }
-    else { // show alert if null
-        alert("Un problème est survenu, nous sommes désolés pour la gêne occasionnée.")
+    else { // Show alert if null
+        error()
     }
 }
 

@@ -10,28 +10,35 @@ fetch(URL)
 
 // Get products from database and send to appendChildren function
 function getProducts(data) {
-    console.log(data); // show all products
+    for(let i = 0; i < data.length; i++) { // Loop for each product in data
+        console.log("Kanap:", data[i]); // show all products in console ( temporaire )
+    // each product = data[i] = "data"
 
     // Data array of objects uuid
-    const dataId = data[0]._id
+    const dataId = data[i]._id
 
     // Data array of objects Name
-    const dataName = data[0].name
+    const dataName = data[i].name
 
     // Data array of objects IMG
-    const imageUrl = data[0].imageUrl
+    const imageUrl = data[i].imageUrl
 
     // Data array of objects alt
-    const altTxt = data[0].altTxt
+    const altTxt = data[i].altTxt
 
     // Data array of objects description
-    const dataInfo = data[0].description
+    const dataInfo = data[i].description
 
     // Data array of objects price
-    const price = data[0].price
+    const price = data[i].price
 
     // Data array of objects color 
-    const color = data[0].colors
+    const color = data[i].colors
+
+
+
+   // add link to product
+   const link = createLink(dataId, dataName, imageUrl, altTxt, dataInfo)
 
 
     // Create article > information for product card
@@ -39,33 +46,32 @@ function getProducts(data) {
     const images = createImage(imageUrl, altTxt) // create image
     const description = createDescription(dataInfo) // create description
 
+    const article = document.createElement("article") // create article for product card
 
-    // add link to product
-    const link = createLink(dataId, dataName, imageUrl, altTxt, dataInfo)
-    const article = createArticle()
+    appendArticle(article, images, h3, description) // append article product information
+    appendLinkToArticle(link, article) // add link to article  
+
+} // end for loop
+} // end getProducts function
+
+
+// appendChild to Article for product information
+function appendArticle(article, images, h3, description) {
     article.appendChild(images) // add image to article
     article.appendChild(h3) // add title to article
     article.appendChild(description)  // add description to article
-    appendChildren(link, article) // add link to article  
 }
 
 
-// Create article for product card
-function createArticle() {
-    const article = document.createElement("article") // Create a element for article
-    console.log(article) // show article in console ( temporaire )
-    return article // return article
-}
-
-
-// Create product card link from data whith UUID
+// Create link to product with id
 function createLink(dataId) {
     const link = document.createElement("a") // Create a element for link / product
     link.href = "./product.html?id=" + dataId // Create a link to product with UUID
     return link
 }
 
-// create product card from data TITLE h3
+
+// Create title for product card
 function createTitle(dataName) {
     const title = document.createElement("h3") // Create a element <h3>
     title.classList.add("productName") // add a class to title
@@ -73,7 +79,8 @@ function createTitle(dataName) {
     return title
 }
 
-// create product card from data IMG
+
+// Create img for product card
 function createImage(imageUrl, altTxt) {
     const image = document.createElement("img") // Create a element <img>
     image.src = imageUrl // add a link to image
@@ -81,7 +88,8 @@ function createImage(imageUrl, altTxt) {
     return image
 }
 
-// create product card from data paragraph description
+
+// Create description for product card
 function createDescription(dataInfo) {
     const description = document.createElement("p") // Create a element <p>
     description.classList.add("productDescription") // add a class to description
@@ -90,7 +98,7 @@ function createDescription(dataInfo) {
 }
 
 // Add link to product & load items to article
-function appendChildren(link, article) {
+function appendLinkToArticle(link, article) {
     const items = document.querySelector("#items"); // get element with id items
     if (items !== null) { // security check for items
         items.appendChild(link); // append link to item

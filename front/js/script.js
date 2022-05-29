@@ -1,12 +1,20 @@
-
 const URL = "http://localhost:3000/api/products/"; // URL for get products
 
 
 // Fetch backend data for products
 fetch(URL)
 .then((response) => response.json())
-.then((dataResponse) => getProducts(dataResponse)) 
-// ^ Get products from database and send to getProducts function
+.then((dataResponse) => getProducts(dataResponse))
+.catch((error) => alertError())
+// Get products from database and send to getProducts function
+
+
+// alert error function
+function alertError() {
+    alert("Un problème est survenu, nous sommes désolés pour la gêne occasionnée.")
+}
+
+// TODO : fichier a par pour gestion local storage pour stocker les données / supprimer les données / mettre a jour les données
 
 
 // Get products from database and send to appendChildren function
@@ -29,12 +37,6 @@ function getProducts(data) {
 
     // Data array of objects description
     const dataInfo = data[i].description
-
-    // Data array of objects price
-    const price = data[i].price
-
-    // Data array of objects color 
-    const color = data[i].colors
 
 
 
@@ -104,8 +106,5 @@ function appendLinkToArticle(link, article) {
     if (items !== null) { // Security check for items
         items.appendChild(link); // Append link to item
         link.appendChild(article); // Append article to link
-    }
-    else { // show alert if items is null
-        alert("Un problème dans la base de données est survenu, nous sommes désolés pour la gêne occasionnée.")
     }
 }

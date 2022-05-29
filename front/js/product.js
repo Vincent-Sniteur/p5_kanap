@@ -11,6 +11,12 @@ const getProductData = `http://localhost:3000/api/products/${id}`; // URL for ge
 fetch(getProductData)
 .then((response) => response.json())
 .then((dataResponse) => getProducts(dataResponse))
+.catch((error) => alertError())
+
+// alert error function
+function alertError() {
+    alert("Un problème est survenu, nous sommes désolés pour la gêne occasionnée.")
+}
 
 
 // Get products from database
@@ -33,9 +39,6 @@ function addTitle (name) {
     if (selectorTitle !== null) { // Security check for title
         selectorTitle.textContent = name // Add title from data
     }
-    else { // Show alert if null
-        error()
-    }
 }
 
 
@@ -45,9 +48,6 @@ function addPrice (price) {
     if (selectorPrice !== null) { // Security check for price
         selectorPrice.textContent = price // add price from data
     }
-    else { // Show alert if null
-       error()
-    }
 }
 
 
@@ -56,9 +56,6 @@ function addDescription (description) {
     const selectorDescription = document.querySelector("#description") // Add selector for description
     if (selectorDescription !== null) { // Security check for description
         selectorDescription.textContent = description // Add description from data
-    }
-    else { // Show alert if null
-        error()
     }
 }
 
@@ -74,9 +71,6 @@ function addColorChoice (colors) {
             colorSelector.appendChild(option) // Add option to selector
         });
     }
-    else { // Show alert if null
-        error()
-    }
 }
 
 
@@ -89,13 +83,4 @@ function addImg (imageUrl, altTxt) {
     if (selectorIMG !== null) { // Security check for img selector
         selectorIMG.appendChild(img) // Add image to selector
     }
-    else { // Show alert if null
-        error()
-    }
-}
-
-
-// Error message for null / undefined values
-function error() {
-    alert("Un problème est survenu, nous sommes désolés pour la gêne occasionnée.")
 }

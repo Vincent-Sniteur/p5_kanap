@@ -84,3 +84,65 @@ function addImg (imageUrl, altTxt) {
         selectorIMG.appendChild(img) // Add image to selector
     }
 }
+
+
+
+
+
+/*----------------------------------------ADD TO CART----------------------------------------*/
+
+// Add to cart button SUCCESS
+function productAdded() {
+    alert("Le produit a été ajouté au panier.")
+    if ( confirm( "Allez au panier ?" )) {
+        window.location.href = "cart.html"; // Redirect to cart page
+    } else {
+        alert("Votre produit a bien été ajouté au panier.")
+    }
+}
+// Add to cart button FAIL
+function productNotAdded() {
+    alert("Le produit n'a pas pu être ajouté au panier.")
+}
+
+// Button add to cart & create product object for cart
+const button = document.querySelector("#addToCart"); // Add button
+if (button !== null) { // Security check for button
+    button.addEventListener("click", () => { // Add event listener on button
+        const color = document.querySelector("#colors").value; // Get value of color
+        const quantity = document.querySelector("#quantity").value; // Get value of quantity
+        const price = document.querySelector("#price").textContent; // Get value of price
+        const name = document.querySelector("#title").textContent; // Get value of name
+        if (color === "" || quantity === "") { // Check if color or quantity is empty
+            alert("Veuillez remplir tous les champs"); // Alert if empty
+        } else { // If color and quantity are not empty
+            const product = { // Create product object
+                id: id,
+                name: name,
+                quantity: quantity,
+                price: price * quantity, // Multiply price by quantity
+                color: color 
+            };
+            addToCart(product); // Add product to cart
+        }
+    });
+}
+
+
+// Add product in Local Storage
+function addToCart(product) {
+    const cart = localStorage.getItem("cart"); // Get cart from local storage
+    if (cart === null) { // If cart is empty
+        const products = []; // Create array
+            products.push(product); // Add product to array
+            const data = JSON.stringify(products); // Convert array to json
+            localStorage.setItem("cart", data); // Add data to local storage
+            productAdded(); // Alert product added
+    } else { // If cart is not empty
+        const products = JSON.parse(cart); // Convert json to array
+            products.push(product); // Add product to array
+            const data = JSON.stringify(products); // Convert array to json
+            localStorage.setItem("cart", data); // Add data to local storage
+            productAdded(); // Alert product added
+    }
+}

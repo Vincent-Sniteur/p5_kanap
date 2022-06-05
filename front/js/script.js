@@ -9,12 +9,10 @@ fetch(URL)
 // Get products from database and send to getProducts function
 
 
-// alert error function
+// Alert error function
 function alertError() {
     alert("Un problème est survenu, nous sommes désolés pour la gêne occasionnée.")
 }
-
-// TODO : fichier a par pour gestion local storage pour stocker les données / supprimer les données / mettre a jour les données
 
 
 // Get products from database and send to appendChildren function

@@ -1,27 +1,31 @@
 
 //***************************************** ALERT / ERROR **************************************************//
-// Alert for empty cart ( désactiver pour le moment )
+
+// Alert for empty cart
 function emptyCart() {
-    // if ( confirm( "Votre panier est vide. Retourner a l'accueil ?" )) {
-    //     window.location.href = "index.html"; // Redirect to cart page
-    // }
+    if ( confirm( "Votre panier est vide. Retourner a l'accueil ?" )) {
+        window.location.href = "index.html"
+    }
 }
 
 
 
 //***************************************** ITEM / ARRAY / LOCAL STORAGE **************************************************//
 
-// Get products in local storage and make a array
+const cart = []
+retrieveItemsLocal()
+cart.forEach((item) => displayItem(item)) // Display all items in cart ( by Array Cart )
+
+// Get number of products in local storage and push in array cart
 function retrieveItemsLocal() {
-    const item = localStorage.getItem("Kanap") // Get "cart" from local storage
+    const item = localStorage.getItem("Kanap")
     if (item === null) { // If cart is empty
-        emptyCart() // Alert error function
+        emptyCart()
     } else { // If cart is not empty
-        const data = JSON.parse(item) // Parse JSON to array
-        data.forEach((item) => displayItem(item))
+        const data = JSON.parse(item)
+        data.forEach((item) => cart.push(item))
     }
 }
-retrieveItemsLocal() // Retrieve items from local storage
 
 
 
@@ -29,15 +33,17 @@ retrieveItemsLocal() // Retrieve items from local storage
 
 // Display product - Create HTML for each product
 function displayItem(item) {
-    const article = createArticle(item)// Create article element
-    displayArticle(article) // Add article to cart
+    const article = createArticle(item)
+    displayArticle(article)
+    totalQuantityInCart() // Display total quantity of products in cart
+    totalPriceInCart() // Display total price of products in cart
 
-    const image = createImg(item) // Create img element
-    const productInfo = createDivInfo(item) // Create div element
-    const description = createDivDescription(item) // Create div element
-    const setting = createDivSettings(item) // Create div element
-    const quantity = createDivQuantity(item) // Create div element
-    const deleteItem = createDivDelete(item) // Create div element
+    const image = createImg(item)
+    const productInfo = createDivInfo(item)
+    const description = createDivDescription(item)
+    const setting = createDivSettings(item)
+    const quantity = createDivQuantity(item)
+    const deleteItem = createDivDelete(item)
 
     article.appendChild(image) // Add img to article
     article.appendChild(productInfo) // Add div productInfo to article
@@ -46,8 +52,6 @@ function displayItem(item) {
     productInfo.appendChild(setting) // Add div setting to div productInfo
     setting.appendChild(quantity) // Add div quantity to div setting
     setting.appendChild(deleteItem) // Add div delete to div setting
-
-    console.log(article) // TODO TEMPORAIRE
 }
 
 
@@ -56,25 +60,25 @@ function displayItem(item) {
 
 // Add article to section "cart_items" in cart.html
 function displayArticle(article) {
-    document.querySelector("#cart__items").appendChild(article); // Add article to cart
+    document.querySelector("#cart__items").appendChild(article)
 }
 
 
 // Create Global div for product information
 function createDivInfo(item) {
-    const div = document.createElement("div") // Create div element
-    div.classList.add("cart__item__content") // Add class to div
+    const div = document.createElement("div")
+    div.classList.add("cart__item__content")
 
-    return div // Return div
+    return div
 }
 
 
 // Create Global div for product setting cart__item__content__settings
 function createDivSettings(item) {
-    const div = document.createElement("div") // Create div element
-    div.classList.add("cart__item__content__settings") // Add class to div
+    const div = document.createElement("div")
+    div.classList.add("cart__item__content__settings")
 
-    return div // Return div
+    return div
 }
 
 
@@ -83,108 +87,140 @@ function createDivSettings(item) {
 
 // Create Article for each product + dataset
 function createArticle(item) {
-    const article = document.createElement("article") // Create article element
-    article.classList.add("cart__item") // Add class to article
+    const article = document.createElement("article")
+    article.classList.add("cart__item")
     article.dataset.id = item.id
     article.dataset.color = item.color
 
-    return article // Return article
+    return article
 }
 
 
 // Create IMG & div for Image product + alt
 function createImg(item) {
-    const div = document.createElement("div") // Create div element for img
-    div.classList.add("cart__item__img") // Add class to img
+    const div = document.createElement("div")
+    div.classList.add("cart__item__img")
     
-    const image = document.createElement("img"); // Create img element
-    image.src = item.img // Set img src
-    image.alt = item.alt // Set img alt
-    div.appendChild(image) // Add img to div
+    const image = document.createElement("img")
+    image.src = item.img
+    image.alt = item.alt
+    div.appendChild(image)
 
-    return div // Return div
+    return div
 }
 
 
 // Create div for product description ( name, price, color )
 function createDivDescription(item) {
-    const div = document.createElement("div") // Create div element
-    div.classList.add("cart__item__content__description") // Add class to div
+    const div = document.createElement("div")
+    div.classList.add("cart__item__content__description")
 
-    const name = document.createElement("h2") // Create h3 element
-    name.textContent = item.name // Set h2 text
+    const name = document.createElement("h2")
+    name.textContent = item.name
 
-    const color = document.createElement("p") // Create p element
-    color.textContent = ("Couleur: " + item.color) // Set p text
+    const color = document.createElement("p")
+    color.textContent = ("Couleur: " + item.color)
 
-    const price = document.createElement("p") // Create p element
-    price.textContent = (item.price + " €") // Set p text
-    div.appendChild(name) // Add name to div
-    div.appendChild(color) // Add color to div
-    div.appendChild(price) // Add price to div
+    const price = document.createElement("p")
+    price.textContent = (item.price + " €")
+    div.appendChild(name)
+    div.appendChild(color)
+    div.appendChild(price)
 
     return div
 }
 
+
 // Create div for product quantity + input
 function createDivQuantity(item) {
-    const div = document.createElement("div") // Create div element
-    div.classList.add("cart__item__content__settings__quantity") // Add class to div
+    const div = document.createElement("div")
+    div.classList.add("cart__item__content__settings__quantity")
 
-    const quantity = document.createElement("p") // Create p element
-    quantity.textContent = ("Quantité: ") // Set p text - Quantity of product
+    const quantity = document.createElement("p")
+    quantity.textContent = ("Qté :  ")
 
-    const input = document.createElement("input") // Create input element
-    input.type = "number" // Set input type
-    input.classList.add("itemQuantity") // Add class to input
-    input.name = "itemQuantity" // Set input name
-    input.min = "1" // Set input min
-    input.max = "100" // Set input max
-    input.value = item.quantity // Set input value
-    input.addEventListener("change", () => {
-        item.quantity = input.value // Set item quantity
-        // TODO UPDATE LIVE
+    const input = document.createElement("input")
+    input.type = "number"
+    input.classList.add("itemQuantity")
+    input.name = "itemQuantity"
+    input.min = "1"
+    input.max = "100"
+    input.value = item.quantity
+    input.addEventListener("input", () => {
+        item.quantity = input.value
+        updateQuantity(item.id) // Update quantity in local storage
     })
 
-
-    div.appendChild(quantity) // Add quantity to div
-    div.appendChild(input) // Add input to div
-    return div // Return div
+    div.appendChild(quantity)
+    div.appendChild(input)
+    return div
 }
 
 
 // Create div for delete product from array items
 function createDivDelete(item) {
-    const div = document.createElement("div") // Create div element
-    div.classList.add("cart__item__content__settings__delete") // Add class to div
+    const div = document.createElement("div")
+    div.classList.add("cart__item__content__settings__delete")
 
-    const deleteButton = document.createElement("p") // Create button element
-    deleteButton.classList.add("deleteItem") // Add class to button
-    deleteButton.textContent = "Supprimer" // Set button text
+    const deleteButton = document.createElement("p")
+    deleteButton.classList.add("deleteItem")
+    deleteButton.textContent = "Supprimer"
     deleteButton.addEventListener("click", () => {
-        // TODO DELETE LIVE
+        deleteItem(item) // Delete item from local storage + array cart + display
     })
 
-    div.appendChild(deleteButton) // Add button to div
-    return div // Return div
+    div.appendChild(deleteButton)
+    return div
+}
+
+
+// Display total Price of products in cart
+function totalPriceInCart() {
+    const totalPrice = document.querySelector("#totalPrice")
+
+    // Reduce cart array to get total price * quantity
+    const total = cart.reduce((total, item) => total += item.price * item.quantity, 0)
+
+    totalPrice.textContent = total
+}
+
+
+// Delete item in local storage
+function deleteItem(item) {
+    const itemToDelete = cart.findIndex(
+        (product) => product.id === item.id && product.color === item.color)
+    cart.splice(itemToDelete, 1) // Delete item in array
+    localStorage.setItem("Kanap", JSON.stringify(cart)) // Update local storage
+
+
+    const article = document.querySelector(`[data-id="${item.id}"][data-color="${item.color}"]`)
+    article.remove() // Delete article Linked to item deleted
+
+
+    totalQuantityInCart() // Update Live total quantity in cart
+    totalPriceInCart() // Update Live total price in cart
+}
+
+
+// function for update quantity in local storage
+function updateQuantity(item) {
+    const updateItem = cart.findIndex((item) => item.id === item.id && item.color === item.color)
+    localStorage.setItem("Kanap", JSON.stringify(cart)) // Update local storage
+
+    totalQuantityInCart() // Update Live total quantity in cart
+    totalPriceInCart() // Update Live total price in cart
 }
 
 
 
+// Display total quantity of products in cart
+function totalQuantityInCart() {
+    const totalQuantity = document.querySelector("#totalQuantity")
 
+    let total = 0
+    for(let i = 0; i < cart.length; i++) {
+        total += JSON.parse(cart[i].quantity)
+    }
 
-
-
-
-
-
-// // Total price for cart ( EN TEST )
-// function totalPrice() {
-//     const cart = document.querySelector("#cart__items") // Get cart
-//     const items = cart.querySelectorAll("article") // Get all items in cart
-//     let total = 0 // Set total to 0
-//     items.forEach((item) => { // For each item in cart
-//         total += parseFloat(item.dataset.price) // Add price to total
-//     })
-//     return total // Return total
-// }
+    totalQuantity.textContent = total
+}

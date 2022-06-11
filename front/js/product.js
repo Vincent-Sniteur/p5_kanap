@@ -100,23 +100,29 @@ function productAdded() {
         alert("Votre produit a bien été ajouté au panier.")
     }
 }
+
+
 // Add to cart button FAIL
 function productNotAdded() {
     alert("Le produit n'a pas pu être ajouté au panier.")
 }
 
+
 // Button add to cart & create product object for cart
-const button = document.querySelector("#addToCart"); // Add button
+const button = document.querySelector("#addToCart") // Add button
+
 if (button !== null) { // Security check for button
     button.addEventListener("click", () => { // Add event listener on button
-        const color = document.querySelector("#colors").value; // Get value of color
-        const quantity = document.querySelector("#quantity").value; // Get value of quantity
-        const price = document.querySelector("#price").textContent; // Get value of price
-        const name = document.querySelector("#title").textContent; // Get value of name
-        const img = document.querySelector(".item__img").querySelector("img").src; // Get value of img
-        const alt = document.querySelector(".item__img").querySelector("img").alt; // Get value of alt
-        if (color === "" || quantity === "") { // Check if color or quantity is empty
-            alert("Veuillez remplir tous les champs"); // Alert if empty
+        const color = document.querySelector("#colors").value // Get value of color
+        const quantity = document.querySelector("#quantity").value // Get value of quantity
+        const price = document.querySelector("#price").textContent // Get value of price
+        const name = document.querySelector("#title").textContent // Get value of name
+        const img = document.querySelector(".item__img").querySelector("img").src // Get value of img
+        const alt = document.querySelector(".item__img").querySelector("img").alt // Get value of alt
+
+        if (quantity === "0" || color === "") { // Check if color or quantity is empty
+            alert("Veuillez remplir tous les champs") // Alert if empty
+
         } else { // If color and quantity are not empty
             const product = { // Create product object
                 id: id,
@@ -126,29 +132,31 @@ if (button !== null) { // Security check for button
                 color: color,
                 img: img,
                 alt: alt
-            };
-            addToCart(product); // Add product to cart
+            }
+            addToCart(product) // Add product to cart
         }
-    });
+    })
 }
 
-// TODO Security check for price in cart page only ( faire rappel du prix de la DB)
 // Toast for product added ( alert ) Library JS - Check si autorisé
 
 // Add product in Local Storage
 function addToCart(product) {
-    const cart = localStorage.getItem("Kanap"); // Get cart from local storage
+    const productKey = "Kanap" // Create product key
+    const cart = localStorage.getItem(productKey) // Get cart from local storage
+
     if (cart === null) { // If cart is empty
-        const products = []; // Create array
-            products.push(product); // Add product to array
-            const data = JSON.stringify(products); // Convert array to json
-            localStorage.setItem("Kanap", data); // Add data to local storage
-            productAdded(); // Alert product added
+        const products = []
+        products.push(product)
+        const data = JSON.stringify(products)
+        localStorage.setItem(productKey, data) // Add data to local storage
+        productAdded()
+
     } else { // If cart is not empty
-        const products = JSON.parse(cart); // Convert json to array
-            products.push(product); // Add product to array
-            const data = JSON.stringify(products); // Convert array to json
-            localStorage.setItem("Kanap", data); // Add data to local storage
-            productAdded(); // Alert product added
+        const products = JSON.parse(cart)
+        products.push(product)
+        const data = JSON.stringify(products)
+        localStorage.setItem(productKey, data) // Add data to local storage
+        productAdded()
     }
 }

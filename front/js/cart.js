@@ -12,18 +12,29 @@ function emptyCart() {
 
 //***************************************** ITEM / ARRAY / LOCAL STORAGE **************************************************//
 
+// Array cart
 const cart = []
 retrieveItemsLocal()
 cart.forEach((item) => displayItem(item)) // Display all items in cart ( by Array Cart )
 
+
+
+// Button Send Form
+const buttonOrder = document.querySelector("#order")
+buttonOrder.addEventListener("click", (a) => submitForm(a))
+
+
+
 // Get number of products in local storage and push in array cart
 function retrieveItemsLocal() {
     const item = localStorage.getItem("Kanap")
-    if (item === null) { // If cart is empty
+    
+    const data = JSON.parse(item)
+    data.forEach((item) => cart.push(item))
+
+    // id data === 0 => cart is empty
+    if (data.length === 0) {
         emptyCart()
-    } else { // If cart is not empty
-        const data = JSON.parse(item)
-        data.forEach((item) => cart.push(item))
     }
 }
 
@@ -104,8 +115,8 @@ function createImg(item) {
     const image = document.createElement("img")
     image.src = item.img
     image.alt = item.alt
-    div.appendChild(image)
 
+    div.appendChild(image)
     return div
 }
 
@@ -123,10 +134,10 @@ function createDivDescription(item) {
 
     const price = document.createElement("p")
     price.textContent = (item.price + " €")
+
     div.appendChild(name)
     div.appendChild(color)
     div.appendChild(price)
-
     return div
 }
 
@@ -173,6 +184,7 @@ function createDivDelete(item) {
     return div
 }
 
+//***************************************** Function Delete / Price & Quantity **************************************************//
 
 // Display total Price of products in cart
 function totalPriceInCart() {
@@ -199,16 +211,18 @@ function deleteItem(item) {
 
     totalQuantityInCart() // Update Live total quantity in cart
     totalPriceInCart() // Update Live total price in cart
+    validForm() // Update Live valid form
 }
 
 
-// function for update quantity in local storage
+// Function for update quantity in local storage
 function updateQuantity(item) {
-    const updateItem = cart.findIndex((item) => item.id === item.id && item.color === item.color)
-    localStorage.setItem("Kanap", JSON.stringify(cart)) // Update local storage
+    cart.findIndex((item) => item.id === item.id && item.color === item.color)
+    localStorage.setItem("Kanap", JSON.stringify(cart))
 
     totalQuantityInCart() // Update Live total quantity in cart
     totalPriceInCart() // Update Live total price in cart
+    validForm() // Update Live valid form
 }
 
 
@@ -223,4 +237,108 @@ function totalQuantityInCart() {
     }
 
     totalQuantity.textContent = total
+}
+
+
+
+
+//***************************************** FORM **************************************************//
+
+// Function for submit form
+function submitForm(a) {
+    a.preventDefault()
+    
+    // If cart is empty, display error message
+    if (cart.length === 0) {
+        emptyCart()
+        return
+    } 
+
+    if (invalideForm()) return // If form is invalide, return
+    if (invalideEmail()) return // If email is invalide, return
+
+    // Fetch data for order
+    const order = validForm()
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      body: JSON.stringify(order),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const orderId = data.orderId$
+        window.location.href = "/html/confirmation.html" + "?orderId=" + orderId
+      })
+      .catch((error) => console.error(error))
+}
+
+
+// Function for valid form get all information and return object for send to backend
+function validForm() {
+    const form = document.querySelector(".cart__order__form")
+
+    const firstName = form.elements.firstName.value
+    const lastName = form.elements.lastName.value
+    const address = form.elements.address.value
+    const city = form.elements.city.value
+    const email = form.elements.email.value
+
+    const order = {
+        contact: {
+            firstName: firstName,
+            lastName: lastName,
+            address: address,
+            city: city,
+            email: email
+          },
+          products: getIdInCart()
+        }
+    return order
+}
+
+
+// Get id of product in cart and push it in array ID
+function getIdInCart() {
+    const id = []
+
+    for(let i = 0; i < cart.length; i++) {
+        id.push(cart[i].id)
+    }
+    return id
+}
+
+
+// Regex for form check if email is valid
+function invalideEmail() {
+    const email = document.querySelector("#email").value
+    const regex = /^[A-Za-z0-9+_.-]+@(.+)$/
+
+    if (regex.test(email) === false) {
+      alert("L'adresse email est invalide")
+      return true
+    }
+    return false
+}
+
+// Check if form is valid
+function invalideForm() {
+    const form = document.querySelector(".cart__order__form")
+    const firstName = form.elements.firstName.value
+    const lastName = form.elements.lastName.value
+    const address = form.elements.address.value
+    const city = form.elements.city.value
+    const email = form.elements.email.value
+
+    if (firstName === "" || lastName === "" || address === "" || city === "" || email === "") {
+        alert("Veuillez remplir tous les champs")
+        return true
+    }
+    return false
+}
+
+// Redirect to confirmation page if form is valid
+function commandConfirmed() {
+    alert("Votre commande a été confirmée")
 }

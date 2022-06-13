@@ -1,21 +1,22 @@
+const orderId = idOrder()
+displayIdOrder(orderId)
+deleteCache()
 
-
-
-
-//  Order number of the command if buy is valided
-function commandNumber() {
-
-    const number = Math.floor(Math.random() * 1000000)
-
-    // add save in local storage the number created ( only if buy is valided and one time )
-    localStorage.setItem("Kanap-Order", number)
-    return number
+// Get ID of order
+function idOrder() {
+  const queryString = window.location.search
+  const urlParams = new URLSearchParams(queryString)
+  return urlParams.get("orderId")
 }
 
-// Display commandNumber in orderId
-function displayCommandNumber() {
-    const number = localStorage.getItem("Kanap-Order")
-    const orderId = document.querySelector("#orderId")
-    orderId.textContent = number
+// Display ID of order
+function displayIdOrder(orderId) {
+  const orderIdElement = document.querySelector("#orderId")
+  orderIdElement.textContent = orderId
 }
-displayCommandNumber()
+
+// Delete Cache
+function deleteCache() {
+  const cache = window.localStorage
+  cache.clear()
+}

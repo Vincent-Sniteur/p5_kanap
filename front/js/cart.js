@@ -8,6 +8,10 @@ function emptyCart() {
     }
 }
 
+// Redirect to confirmation page if form is valid
+function commandConfirmed() {
+    alert("Votre commande a été confirmée")
+}
 
 
 //***************************************** ITEM / ARRAY / LOCAL STORAGE **************************************************//
@@ -28,13 +32,13 @@ buttonOrder.addEventListener("click", (a) => submitForm(a))
 // Get number of products in local storage and push in array cart
 function retrieveItemsLocal() {
     const item = localStorage.getItem("Kanap")
-    
     const data = JSON.parse(item)
-    data.forEach((item) => cart.push(item))
-
-    // id data === 0 => cart is empty
+    console.log(item)
+    // Add verification if local storage is empty TODO DEBUG
     if (data.length === 0) {
         emptyCart()
+    } else {
+        data.forEach((item) => cart.push(item))
     }
 }
 
@@ -76,7 +80,7 @@ function displayArticle(article) {
 
 
 // Create Global div for product information
-function createDivInfo(item) {
+function createDivInfo() {
     const div = document.createElement("div")
     div.classList.add("cart__item__content")
 
@@ -84,8 +88,8 @@ function createDivInfo(item) {
 }
 
 
-// Create Global div for product setting cart__item__content__settings
-function createDivSettings(item) {
+// Create Global div for product settings
+function createDivSettings() {
     const div = document.createElement("div")
     div.classList.add("cart__item__content__settings")
 
@@ -186,16 +190,6 @@ function createDivDelete(item) {
 
 //***************************************** Function Delete / Price & Quantity **************************************************//
 
-// Display total Price of products in cart
-function totalPriceInCart() {
-    const totalPrice = document.querySelector("#totalPrice")
-
-    // Reduce cart array to get total price * quantity
-    const total = cart.reduce((total, item) => total += item.price * item.quantity, 0)
-
-    totalPrice.textContent = total
-}
-
 
 // Delete item in local storage
 function deleteItem(item) {
@@ -211,18 +205,18 @@ function deleteItem(item) {
 
     totalQuantityInCart() // Update Live total quantity in cart
     totalPriceInCart() // Update Live total price in cart
-    validForm() // Update Live valid form
+    getFormData() // Update Live valid form
 }
 
 
 // Function for update quantity in local storage
-function updateQuantity(item) {
+function updateQuantity() {
     cart.findIndex((item) => item.id === item.id && item.color === item.color)
     localStorage.setItem("Kanap", JSON.stringify(cart))
 
     totalQuantityInCart() // Update Live total quantity in cart
     totalPriceInCart() // Update Live total price in cart
-    validForm() // Update Live valid form
+    getFormData() // Update Live valid form
 }
 
 
@@ -240,6 +234,15 @@ function totalQuantityInCart() {
 }
 
 
+// Display total Price of products in cart
+function totalPriceInCart() {
+    const totalPrice = document.querySelector("#totalPrice")
+
+    // Reduce cart array to get total price * quantity
+    const total = cart.reduce((total, item) => total += item.price * item.quantity, 0)
+
+    totalPrice.textContent = total
+}
 
 
 //***************************************** FORM **************************************************//
@@ -258,7 +261,7 @@ function submitForm(a) {
     if (invalideEmail()) return // If email is invalide, return
 
     // Fetch data for order
-    const order = validForm()
+    const order = getFormData()
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       body: JSON.stringify(order),
@@ -268,15 +271,15 @@ function submitForm(a) {
     })
       .then((response) => response.json())
       .then((data) => {
-        const orderId = data.orderId$
+        const orderId = data.orderId
         window.location.href = "/html/confirmation.html" + "?orderId=" + orderId
       })
-      .catch((error) => console.error(error))
+      .catch((error) => console.log(error)) // TODO ADD FUNCTION ERROR
 }
 
 
 // Function for valid form get all information and return object for send to backend
-function validForm() {
+function getFormData() {
     const form = document.querySelector(".cart__order__form")
 
     const firstName = form.elements.firstName.value
@@ -336,9 +339,4 @@ function invalideForm() {
         return true
     }
     return false
-}
-
-// Redirect to confirmation page if form is valid
-function commandConfirmed() {
-    alert("Votre commande a été confirmée")
 }

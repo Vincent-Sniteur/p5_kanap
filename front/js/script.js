@@ -4,7 +4,7 @@ const URL = "http://localhost:3000/api/products/"; // URL for get products
 // Fetch back-end data for products
 fetch(URL)
 .then((response) => response.json())
-.then((dataResponse) => getProducts(dataResponse))
+.then((dataResponse) => getProductsData(dataResponse))
 .catch(() => alertError())
 // Get products from back-end and send to getProducts function
 
@@ -16,7 +16,7 @@ function alertError() {
 
 
 // Get products from back-end and send to appendChildren function
-function getProducts(data) {
+function getProductsData(data) {
     for(let i = 0; i < data.length; i++) { // Loop for each product in data
 
     // Data array of objects id

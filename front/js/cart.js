@@ -13,6 +13,10 @@ function commandConfirmed() {
     alert("Votre commande a été confirmée")
 }
 
+// Function error fetching data from API
+function errorFetchingData() {
+    alert("Une erreur est survenue. Veuillez réessayer ultérieurement.")
+}
 
 //***************************************** ITEM / ARRAY / LOCAL STORAGE **************************************************//
 
@@ -33,8 +37,8 @@ buttonOrder.addEventListener("click", (a) => submitForm(a))
 function retrieveItemsLocal() {
     const item = localStorage.getItem("Kanap")
     const data = JSON.parse(item)
-    console.log(item)
-    // Add verification if local storage is empty TODO DEBUG
+
+    // Add verification if local storage is empty
     if (data.length === 0) {
         emptyCart()
     } else {
@@ -205,7 +209,7 @@ function deleteItem(item) {
 
     totalQuantityInCart() // Update Live total quantity in cart
     totalPriceInCart() // Update Live total price in cart
-    getFormData() // Update Live valid form
+    getCartData() // Update Live valid form
 }
 
 
@@ -216,7 +220,7 @@ function updateQuantity() {
 
     totalQuantityInCart() // Update Live total quantity in cart
     totalPriceInCart() // Update Live total price in cart
-    getFormData() // Update Live valid form
+    getCartData() // Update Live valid form
 }
 
 
@@ -261,7 +265,7 @@ function submitForm(a) {
     if (invalideEmail()) return // If email is invalide, return
 
     // Fetch data for order
-    const order = getFormData()
+    const order = getCartData()
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       body: JSON.stringify(order),
@@ -274,12 +278,12 @@ function submitForm(a) {
         const orderId = data.orderId
         window.location.href = "/html/confirmation.html" + "?orderId=" + orderId
       })
-      .catch((error) => console.log(error)) // TODO ADD FUNCTION ERROR
+      .catch((error) => errorFetchingData(error))
 }
 
 
 // Function for valid form get all information and return object for send to backend
-function getFormData() {
+function getCartData() {
     const form = document.querySelector(".cart__order__form")
 
     const firstName = form.elements.firstName.value

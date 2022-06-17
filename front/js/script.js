@@ -54,7 +54,7 @@ function getProductsData(data) {
 } // End getProducts function
 
 
-// "appendChild" to Article for product information
+// Append to Article for product information
 function appendArticle(article, images, h3, description) {
     article.appendChild(images)
     article.appendChild(h3)
@@ -99,7 +99,7 @@ function createDescription(dataInfo) {
     const description = document.createElement("p")
 
     description.classList.add("productDescription")
-    description.textContent = dataInfo + "€"
+    description.textContent = dataInfo
 
     return description
 }

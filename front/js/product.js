@@ -108,7 +108,6 @@ if (button !== null) { // Security check for button
     button.addEventListener("click", () => {
         const color = document.querySelector("#colors").value
         const quantity = document.querySelector("#quantity").value
-        const price = document.querySelector("#price").textContent
         const name = document.querySelector("#title").textContent
         const img = document.querySelector(".item__img").querySelector("img").src
         const alt = document.querySelector(".item__img").querySelector("img").alt
@@ -121,7 +120,6 @@ if (button !== null) { // Security check for button
                 id: id,
                 name: name,
                 quantity: quantity,
-                price: price,
                 color: color,
                 img: img,
                 alt: alt

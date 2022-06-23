@@ -23,14 +23,28 @@ function errorFetchingData() {
 // Array cart
 const cart = []
 retrieveItemsLocal()
-cart.forEach((item) => displayItem(item)) // Display all items in cart ( by Array Cart )
-
 
 
 // Button Send Form
 const buttonOrder = document.querySelector("#order")
 buttonOrder.addEventListener("click", (a) => submitForm(a))
 
+
+// Add price by ID from Back-End to cart
+function fetchProduct(item) {
+    const id = item.id
+    const url = `http://localhost:3000/api/products/${id}`
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            item.price = data.price
+            displayItem(item)
+        })
+        .catch(() => errorFetchingData())
+
+    return item
+}
 
 
 // Get number of products in local storage and push in array cart
@@ -42,7 +56,7 @@ function retrieveItemsLocal() {
     if (data.length === 0) {
         emptyCart()
     } else {
-        data.forEach((item) => cart.push(item))
+        data.forEach((item) => cart.push(item) + fetchProduct(item))
     }
 }
 

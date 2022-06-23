@@ -1,21 +1,21 @@
 # Kanap
 
-Front end & back end serveur du Projet 5 du parcours développeur web d'Openclassrooms.
+Front end & back end serveur du Projet 5 du parcours dï¿½veloppeur web d'Openclassrooms.
 
 ## Prerequis :
 
-Pour faire fonctionner ce projet, vous avez besoin de Node et npm d'installés sur votre machine.
+Pour faire fonctionner ce projet, vous avez besoin de Node et npm d'installï¿½s sur votre machine.
 
 
 ## Back end Installation
 
-Clonez ce dépôt.
+Clonez ce dï¿½pï¿½t.
 Dans le dossier "back" lancer `npm install`
-Vous pouvez ensuite exécuter le serveur avec `node server`
-Le serveur doit fonctionner sur `localhost` avec le port par défaut `3000`
+Vous pouvez ensuite exï¿½cuter le serveur avec `node server`
+Le serveur doit fonctionner sur `localhost` avec le port par dï¿½faut `3000`
 
-Si le serveur fonctionne sur un autre port pour une raison quelconque, l'information est indiqué sur la
-console au démarrage du serveur. `listening on port xxxx`
+Si le serveur fonctionne sur un autre port pour une raison quelconque, l'information est indiquï¿½ sur la
+console au dï¿½marrage du serveur. `listening on port xxxx`
 
 ## Licence 
 
